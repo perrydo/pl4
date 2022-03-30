@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Add GeoJSON from ArcGIS Server</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+	// Modified from: https://docs.mapbox.com/mapbox-gl-js/example/live-geojson/
+	// Make sure you use your own Access Token
+	mapboxgl.accessToken = 'pk.eyJ1IjoicGVycnlkbyIsImEiOiJjbDE0bTJjaWkwd2hoM2twMzJueWc2Ymt2In0.9woaI4P-Kk6VLGUqCEyEXQ';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v10',
+        // you can change map style using id https://docs.mapbox.com/api/maps/styles/
+        zoom: 3,
+        center: [-100.0, 50.0]
+    });
+    // Modify this to place your own map service URL here. Show one or more provinces--do not just show Ontario like this example. 
+    var url = 'RNAME%3D%27Alberta%27&text=&objectIds=&time=&timeRelation=esriTimeRelationOverlaps&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&distance=&units=esriSRUnit_Foot&relationParam=&outFields=&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&havingClause=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&historicMoment=&returnDistinctValues=false&resultOffset=&resultRecordCount=&returnExtentOnly=false&sqlFormat=none&datumTransformation=&parameterValues=&rangeValues=&quantizationParameters=&featureEncoding=esriDefault&f=geojson';
+    map.on('load', function() {
+        window.setInterval(function() {
+            map.getSource('canada').setData(url);
+        }, 2000);
+
+        map.addSource('canada', { type: 'geojson', data: url });
+        map.addLayer({
+            'id': 'canada',
+            'type': 'fill',
+            'source': 'canada',
+            'layout': {},
+            'paint': {'fill-color': '#088','fill-opacity': 0.8}
+        });
+    });
+</script>
+
+</body>
+</html>
