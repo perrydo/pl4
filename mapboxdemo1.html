@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Geom99: Add ArcGIS Map Service source</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+	// Modified example from this source: https://docs.mapbox.com/mapbox-gl-js/example/wms/
+	// Be sure to insert your OWN mapbox token.
+	mapboxgl.accessToken = 'pk.eyJ1IjoicGVycnlkbyIsImEiOiJjbDE0bTJjaWkwd2hoM2twMzJueWc2Ymt2In0.9woaI4P-Kk6VLGUqCEyEXQ';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/outdoors-v11',
+        zoom: 3,
+        center: [-100.0, 50.0]
+    });
+
+    map.on('load', function() {
+        map.addSource('wms-test-source', {
+            'type': 'raster',
+            'tiles': [
+                'https://luna.flemingcollege.ca/arcgis/rest/services/DemoMapExample/MapServer/export?bbox=-1.6094727806907829E7%2C4212098.9396845065%2C-2299855.33280765%2C1.58656104905175E7&bboxSR=&layers=&layerDefs=&size=&imageSR=&historicMoment=&format=png&transparent=false&dpi=&time=&timeRelation=esriTimeRelationOverlaps&layerTimeOptions=&dynamicLayers=&gdbVersion=&mapScale=&rotation=&datumTransformations=&layerParameterValues=&mapRangeValues=&layerRangeValues=&clipping=&spatialFilter=&f=html'
+            ],
+            'tileSize': 256
+        });
+        map.addLayer(
+            {
+                'id': 'wms-test-layer',
+                'type': 'raster',
+                'source': 'wms-test-source',
+                'paint': {}
+            },
+            'aeroway-line'
+        );
+    });
+</script>
+
+</body>
+</html>
